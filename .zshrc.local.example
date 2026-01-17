@@ -1,0 +1,72 @@
+# Machine-specific zshrc configuration (not tracked in git)
+# Copy to ~/.zshrc.local and customize
+
+# ===================
+# SSH Keys
+# ===================
+# Auto-add keys to ssh-agent on shell start
+# ssh-add ~/.ssh/id_ed25519 >/dev/null 2>&1
+# ssh-add ~/.ssh/github >/dev/null 2>&1
+# ssh-add ~/.ssh/work_key >/dev/null 2>&1
+
+# Quick copy public key to clipboard
+# alias pubkey="pbcopy < ~/.ssh/id_ed25519.pub"
+
+# ===================
+# Project Paths
+# ===================
+# Ansible roles path
+# export ANSIBLE_ROLES_PATH="~/.ansible/roles:/path/to/your/playbooks/roles"
+
+# Custom project directories
+# export PROJECTS="$HOME/projects"
+# export WORK="$HOME/work"
+
+# ===================
+# Encryption (SOPS/Age)
+# ===================
+# Age key file for SOPS
+# export SOPS_AGE_KEY_FILE="$HOME/Library/Application Support/sops/age/keys.txt"
+# Or use SSH key for age
+# export SOPS_AGE_SSH_PRIVATE_KEY_FILE=~/.ssh/id_ed25519
+
+# ===================
+# Language Runtimes
+# ===================
+# Java
+# export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
+
+# Android SDK (React Native)
+# export ANDROID_HOME=$HOME/Library/Android/sdk
+# export PATH=$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools
+
+# Flutter
+# export PATH="$PATH:$HOME/devtools/flutter/bin"
+
+# ===================
+# Work Aliases
+# ===================
+# Project shortcuts
+# alias myapp="cd ~/projects/myapp && docker compose up -d && nvim ."
+# alias work="cd ~/work && tmux new -s work"
+
+# Database connections
+# alias db-prod="pgcli postgresql://user@prod-db.example.com/myapp"
+# alias db-staging="pgcli postgresql://user@staging-db.example.com/myapp"
+
+# SSH shortcuts (if not in .ssh/config)
+# alias prod="ssh deploy@prod.example.com"
+# alias staging="ssh deploy@staging.example.com"
+
+# ===================
+# Cloud CLIs
+# ===================
+# AWS profile
+# export AWS_PROFILE=mycompany
+
+# GCP project
+# export CLOUDSDK_CORE_PROJECT=my-project-id
+
+# Kubernetes context
+# alias kprod="kubectl config use-context production"
+# alias kstaging="kubectl config use-context staging"

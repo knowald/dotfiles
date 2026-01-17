@@ -1,0 +1,15 @@
+.DS_Store
+.secrets
+*.local
+!*.local.example
+
+# Neovim
+.config/nvim/.git/
+.config/nvim/lazy-lock.json
+.config/nvim/spell/
+
+# SSH private keys (only track config)
+.ssh/id_*
+.ssh/*.pub
+.ssh/known_hosts*
+**/.vscode/

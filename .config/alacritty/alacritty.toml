@@ -1,0 +1,105 @@
+# Dracula theme for Alacritty
+# https://draculatheme.com/alacritty
+#
+# Color palette
+# https://spec.draculatheme.com
+#
+# Template
+# https://github.com/alacritty/alacritty/blob/master/alacritty.yml
+
+[window]
+  padding = { x = 2, y = 2 }
+  option_as_alt = "Both"
+
+[colors]
+  [colors.primary]
+    background = '#282a36'
+    # background = '#0d0d0d'
+    foreground = '#f8f8f2'
+
+  [colors.normal]
+    black = '#000000'
+    red = '#ff5555'
+    green = '#50fa7b'
+    yellow = '#f1fa8c'
+    blue = '#caa9fa'
+    magenta = '#ff79c6'
+    cyan = '#8be9fd'
+    white = '#bfbfbf'
+
+  [colors.bright]
+    black = '#575b70'
+    red = '#ff6e67'
+    green = '#5af78e'
+    yellow = '#f4f99d'
+    blue = '#caa9fa'
+    magenta = '#ff92d0'
+    cyan = '#9aedfe'
+    white = '#e6e6e6'
+
+[font]
+  [font.normal]
+    family = "FiraCode Nerd Font Mono"
+    style = "Regular"
+  [font.offset]
+    x = 0
+    y = 2
+  [font.glyph_offset]
+    x = 0
+    y = 0
+
+[keyboard]
+bindings = [
+  { key = "Left",  mods = "Alt",     chars = "\u001bB"   },
+  { key = "Right", mods = "Alt",     chars = "\u001bF"   },
+  { key = "Left",  mods = "Command", chars = "\u001bOH"  },
+  { key = "Right", mods = "Command", chars =  "\u001bOF" },
+  { key = "Back",  mods = "Command", chars = "\u0015"    },
+]
+
+# [keyboard]
+# bindings = [
+# { key= "Left", mods= "Alt", chars= "\u001BB" } # Skip word left
+# ,{ key= "Right", mods= "Alt", chars= "\u001BF" } # Skip word right
+# ,{ key= "Left", mods= "Command", chars= "\u001bOH", mode= "AppCursor" } # Home
+# ,{ key= "Right", mods= "Command", chars= "\u001bOF", mode= "AppCursor" } # End
+# ,{ key= "Back", mods= "Command", chars= "\u0015" } # Delete line
+# ,{ key= "Back", mods= "Alt", chars= "\u001b\u007f" } # Delete word
+# ,{ key= "c", mods= "Command", action= "Copy" } # Copy to Clipboard
+# ]
+
+# [[key_bindings]]
+ #   key = "Right"
+ #   mods = "Alt"
+ #   chars = "\\x1BF"
+
+ # [[key_bindings]]
+ #   key = "Left"
+ #   mods = "Alt"
+ #   chars = "\\x1BB"
+
+# https://stackoverflow.com/a/42461580
+ # [[key_bindings]]
+ #   key = "Return"
+ #   mods = "Shift"
+ #   chars = "\\x1b[13;2u"
+ 
+ # [[key_bindings]]
+ #   key = "Return"
+ #   mods = "Control"
+ #   chars = "\\x1b[13;5u"
+ 
+ # [[key_bindings]]
+ #   key = "Space"
+ #   mods = "Shift"
+ #   chars = "\\x1b[32;2u"
+ 
+ # [[key_bindings]]
+ #   key = "Space"
+ #   mods = "Control"
+ #   chars = "\\x1b[32;5u" # NOTE: This is an edge case and might not work.
+
+[env]
+  TERM = "xterm-256color"
+
+theme = "Dracula"

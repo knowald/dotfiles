@@ -1,0 +1,42 @@
+# Git identity (not tracked in git)
+# Copy to ~/.gitconfig.local and customize
+
+[user]
+    name = Your Name
+    email = your.email@example.com
+    # signingkey = ~/.ssh/id_ed25519.pub
+
+# ===================
+# Signing (optional)
+# ===================
+# Sign commits with SSH key
+# [gpg]
+#     format = ssh
+#
+# [commit]
+#     gpgsign = true
+#
+# [gpg "ssh"]
+#     allowedSignersFile = ~/.ssh/allowed_signers
+
+# ===================
+# Work Profile (conditional)
+# ===================
+# Use different email for work repos
+# [includeIf "gitdir:~/work/"]
+#     path = ~/.gitconfig-work
+#
+# Then create ~/.gitconfig-work:
+# [user]
+#     email = your.name@company.com
+
+# ===================
+# URL Rewrites (optional)
+# ===================
+# Use SSH instead of HTTPS for GitHub
+# [url "git@github.com:"]
+#     insteadOf = https://github.com/
+
+# Use SSH for your org's repos
+# [url "git@github.com:myorg/"]
+#     insteadOf = https://github.com/myorg/
