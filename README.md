@@ -99,6 +99,10 @@ The repo uses a `.local` pattern to separate shareable configs from machine-spec
 | `Ctrl-Shift-Left/Right` | Reorder windows                    |
 | `Ctrl-a h/j/k/l`        | Navigate panes                     |
 | `Ctrl-a n/p`            | Next/previous window               |
+| `Ctrl-a S`              | Send pane to window (prompt)       |
+| `Ctrl-a J`              | Join marked pane to current window |
+| `Ctrl-a m`              | Mark pane (built-in)               |
+| `Ctrl-a M`              | Clear mark (built-in)              |
 
 ### Features
 
@@ -107,6 +111,7 @@ The repo uses a `.local` pattern to separate shareable configs from machine-spec
 - 50,000 line history
 - GitHub-inspired color theme
 - Auto-renumber windows
+- Bell notifications: windows with activity highlight in red (passthrough enabled for terminal notifications)
 
 ---
 
