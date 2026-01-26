@@ -86,6 +86,7 @@ echo "[4/6] Creating symlinks..."
 mkdir -p "$BACKUP_DIR"
 mkdir -p "$HOME/.config"
 mkdir -p "$HOME/.ssh"
+mkdir -p "$HOME/.claude"
 
 symlink() {
     local src="$1"
@@ -112,6 +113,8 @@ symlink "$DOTFILES_DIR/.config/nvim" "$HOME/.config/nvim"
 symlink "$DOTFILES_DIR/.config/alacritty" "$HOME/.config/alacritty"
 symlink "$DOTFILES_DIR/.config/pgcli" "$HOME/.config/pgcli"
 symlink "$DOTFILES_DIR/.hammerspoon" "$HOME/.hammerspoon"
+symlink "$DOTFILES_DIR/.claude/notify.sh" "$HOME/.claude/notify.sh"
+symlink "$DOTFILES_DIR/.claude/settings.json" "$HOME/.claude/settings.json"
 
 # ===================
 # Local configs (not tracked)

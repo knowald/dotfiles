@@ -1,0 +1,27 @@
+{
+  "alwaysThinkingEnabled": true,
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/notify.sh '🔔 Claude Code' 'Claude needs your input' Ping"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/notify.sh '✅ Claude Code' 'Task completed' Funk"
+          }
+        ]
+      }
+    ]
+  }
+}

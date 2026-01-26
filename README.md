@@ -20,6 +20,7 @@ ln -sf ~/dotfiles/.config/nvim ~/.config/nvim
 ln -sf ~/dotfiles/.config/alacritty ~/.config/alacritty
 ln -sf ~/dotfiles/.config/pgcli ~/.config/pgcli
 ln -sf ~/dotfiles/.ssh/config ~/.ssh/config
+ln -sf ~/dotfiles/.claude ~/.claude
 
 # Set up local configs (machine-specific, not tracked)
 cp ~/dotfiles/.zshrc.local.example ~/.zshrc.local
@@ -420,10 +421,37 @@ Lua-based macOS automation:
 
 ---
 
+## Claude Code
+
+**Config:** `.claude/`
+
+[Claude Code](https://claude.ai/claude-code) CLI configuration with smart notifications.
+
+### Features
+
+- **Always thinking** enabled for extended reasoning
+- **Notification hooks** - alerts when Claude needs input or completes a task
+- **Smart notification suppression** - no alerts when actively viewing the tmux pane
+- **Terminal bell integration** - tmux status bar highlights on activity (works with tmux bell settings above)
+
+### Hooks
+
+| Event | Sound | Trigger |
+|-------|-------|---------|
+| Notification | Ping | Claude needs your input |
+| Stop | Funk | Task completed |
+
+### Dependencies
+
+- `terminal-notifier` - macOS notifications (`brew install terminal-notifier`)
+
+---
+
 ## File Structure
 
 ```
 dotfiles/
+├── .claude/                 # Claude Code config & hooks
 ├── .config/
 │   ├── alacritty/           # Terminal config
 │   ├── nvim/                # Neovim (LazyVim)
