@@ -26,8 +26,8 @@ git
 git-delta
 glances
 glow
-goaccess
 go
+goaccess
 graphviz
 gsed
 gsmartcontrol
@@ -84,6 +84,7 @@ sd
 silicon
 sops
 telnet
+terminal-notifier
 terraformer
 tfenv
 the_silver_searcher
