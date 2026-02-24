@@ -36,6 +36,12 @@ vim.keymap.set("v", "g<C-j>", function()
   require("dial.map").manipulate("decrement", "gvisual")
 end)
 
+vim.keymap.set("n", "<leader>cp", function()
+  local path = vim.fn.expand("%:p")
+  vim.fn.setreg("+", path)
+  vim.notify(path, vim.log.levels.INFO, { title = "Copied path" })
+end, { noremap = true, silent = true, desc = "Copy absolute file path" })
+
 -- Add keymap for git open command
 vim.keymap.set("n", "<leader>go", function()
   vim.cmd("!git open")
