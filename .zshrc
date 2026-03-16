@@ -30,9 +30,10 @@ complete -o nospace -C /usr/local/bin/terraform terraform
 # History
 HISTSIZE=1000000
 SAVEHIST=1000000
-
-# History
-setopt histignorespace
+setopt INC_APPEND_HISTORY        # Write immediately, not on shell exit
+setopt HIST_FIND_NO_DUPS         # Don't show duplicates when searching
+setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks
+unsetopt HIST_IGNORE_SPACE       # Keep commands that start with space
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 bindkey "^[[1;5C" forward-word
@@ -109,6 +110,10 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
+# Android SDK
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$PATH"
+
 # Go
 export PATH=$PATH:$(go env GOPATH)/bin
 
@@ -138,3 +143,28 @@ bindkey '^Q' push-line-or-edit
 
 # Load local machine-specific config (SSH keys, paths - not tracked)
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
+
+# bun completions
+[ -s "/Users/knowald/.oh-my-zsh/completions/_bun" ] && source "/Users/knowald/.oh-my-zsh/completions/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+export AWS_DEFAULT_PROFILE="NONE"
+alias cwd="pwd | pbcopy"
+
+if [ -n "$TMUX" ]; then
+    precmd_tmux_reset() {
+        local cmd=$(tmux display-message -p '#{pane_current_command}')
+        if [ "$cmd" != "ssh" ]; then
+            tmux set -p @is_ssh 0 2>/dev/null
+        fi
+    }
+    precmd_functions+=(precmd_tmux_reset)
+fi
+
+# Prevent zsh from overwriting the pane title
+DISABLE_AUTO_TITLE="true"  # if using oh-my-zsh
+# or for plain zsh:
+emulate -L zsh
+setopt no_auto_name_dirs
