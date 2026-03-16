@@ -4,6 +4,9 @@ export ZSH="$HOME/.oh-my-zsh"
 # Theme - see https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="robbyrussell"
 
+# Prevent oh-my-zsh from overwriting pane titles (must be set before sourcing)
+DISABLE_AUTO_TITLE="true"
+
 # Plugins - add wisely, too many slow down shell startup
 plugins=(git zsh-autosuggestions zsh-history-substring-search docker docker-compose zsh-syntax-highlighting fzf-tab)
 
@@ -158,13 +161,8 @@ if [ -n "$TMUX" ]; then
         local cmd=$(tmux display-message -p '#{pane_current_command}')
         if [ "$cmd" != "ssh" ]; then
             tmux set -p @is_ssh 0 2>/dev/null
+            tmux set -pu @ssh_target 2>/dev/null
         fi
     }
     precmd_functions+=(precmd_tmux_reset)
 fi
-
-# Prevent zsh from overwriting the pane title
-DISABLE_AUTO_TITLE="true"  # if using oh-my-zsh
-# or for plain zsh:
-emulate -L zsh
-setopt no_auto_name_dirs
