@@ -1,4 +1,4 @@
-alacritty
+ghostty
 alt-tab
 anki
 audacity

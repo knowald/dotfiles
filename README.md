@@ -17,7 +17,7 @@ ln -sf ~/dotfiles/.zshrc ~/.zshrc
 ln -sf ~/dotfiles/.tmux.conf ~/.tmux.conf
 ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
 ln -sf ~/dotfiles/.config/nvim ~/.config/nvim
-ln -sf ~/dotfiles/.config/alacritty ~/.config/alacritty
+ln -sf ~/dotfiles/.config/ghostty ~/.config/ghostty
 ln -sf ~/dotfiles/.config/pgcli ~/.config/pgcli
 ln -sf ~/dotfiles/.ssh/config ~/.ssh/config
 ln -sf ~/dotfiles/.claude ~/.claude
@@ -152,16 +152,15 @@ Built on [LazyVim](https://www.lazyvim.org/) distribution.
 
 ---
 
-## Terminal Emulator (Alacritty)
+## Terminal Emulator (Ghostty)
 
-**Config:** `.config/alacritty/alacritty.toml`
+**Config:** `.config/ghostty/config`
 
 - **Theme:** Dracula
 - **Font:** FiraCode Nerd Font Mono
 - **Features:**
   - Option as Alt key (macOS)
-  - Word jumping with Alt+Arrow
-  - Line delete with Cmd+Backspace
+  - Reduced scroll speed
 
 ---
 
@@ -309,7 +308,7 @@ ssh staging       # project shortcuts
 
 | Cask | App | Description |
 |------|-----|-------------|
-| `alacritty` | [Alacritty](https://alacritty.org/) | GPU terminal |
+| `ghostty` | [Ghostty](https://ghostty.org/) | Terminal emulator |
 | `cursor` | [Cursor](https://cursor.sh/) | AI code editor |
 | `zed` | [Zed](https://zed.dev/) | Fast code editor |
 | `docker` | [Docker](https://www.docker.com/) | Containers |
@@ -453,7 +452,7 @@ Lua-based macOS automation:
 dotfiles/
 ├── .claude/                 # Claude Code config & hooks
 ├── .config/
-│   ├── alacritty/           # Terminal config
+│   ├── ghostty/             # Terminal config
 │   ├── nvim/                # Neovim (LazyVim)
 │   └── pgcli/               # PostgreSQL CLI
 ├── .hammerspoon/            # macOS automation

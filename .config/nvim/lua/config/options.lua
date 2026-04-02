@@ -4,5 +4,6 @@
 
 local opt = vim.opt
 
+opt.clipboard = "unnamedplus"
 opt.scrolloff = 10
 opt.ignorecase = false

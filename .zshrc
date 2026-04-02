@@ -20,9 +20,6 @@ export LANG=en_US.UTF-8
 # Ruby
 export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
 
-# Autojump
-[ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
-
 # Python
 export PATH="$PATH:/opt/homebrew/opt/python@3.13/libexec/bin"
 
@@ -148,7 +145,7 @@ bindkey '^Q' push-line-or-edit
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
 
 # bun completions
-[ -s "/Users/knowald/.oh-my-zsh/completions/_bun" ] && source "/Users/knowald/.oh-my-zsh/completions/_bun"
+[ -s "$HOME/.oh-my-zsh/completions/_bun" ] && source "$HOME/.oh-my-zsh/completions/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
@@ -166,3 +163,49 @@ if [ -n "$TMUX" ]; then
     }
     precmd_functions+=(precmd_tmux_reset)
 fi
+
+generate-password() {
+  openssl rand -base64 48 | tr -dc 'a-zA-Z0-9' | head -c 32
+}
+
+generate-deploy-keys() {
+  if [[ $# -lt 2 ]]; then
+    echo "Usage: generate-deploy-keys <project> <env> [env...]"
+    echo "Example: generate-deploy-keys sparrowro staging preprod production"
+    return 1
+  fi
+
+  local project=$1
+  shift
+  local envs=("$@")
+  local key_dir=~/.deployment_keys
+  local public_keys=()
+  local private_keys=()
+
+  mkdir -p "$key_dir"
+
+  for env in "${envs[@]}"; do
+    local key_path="${key_dir}/id_${project}_${env}"
+
+    if [[ -f "$key_path" ]]; then
+      echo "WARNING: ${key_path} already exists, skipping"
+    else
+      ssh-keygen -t ed25519 -f "$key_path" -N "" -C "deploy@${project}-${env}"
+    fi
+
+    public_keys+=("$key_path.pub")
+    private_keys+=("$key_path")
+  done
+
+  echo ""
+  echo "Public keys:"
+  for pub in "${public_keys[@]}"; do
+    echo "  $(cat "$pub")"
+  done
+
+  echo ""
+  echo "Private key paths:"
+  for priv in "${private_keys[@]}"; do
+    echo "  ${priv}"
+  done
+}
