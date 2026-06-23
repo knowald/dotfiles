@@ -11,6 +11,8 @@ DISABLE_AUTO_TITLE="true"
 plugins=(git zsh-autosuggestions zsh-history-substring-search docker docker-compose zsh-syntax-highlighting fzf-tab)
 
 ZSH_DISABLE_COMPFIX="true"
+# Update manually with `omz update` - the auto-check costs ~80ms when due
+zstyle ':omz:update' mode disabled
 
 source $ZSH/oh-my-zsh.sh
 
@@ -18,7 +20,8 @@ source $ZSH/oh-my-zsh.sh
 export LANG=en_US.UTF-8
 
 # Ruby
-export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl@1.1)"
+# Hardcoded brew prefix - `brew --prefix` adds ~1.5s to shell startup
+export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/opt/homebrew/opt/openssl@1.1"
 
 # Python
 export PATH="$PATH:/opt/homebrew/opt/python@3.13/libexec/bin"
@@ -38,6 +41,8 @@ bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
+bindkey "^[[1;3C" forward-word
+bindkey "^[[1;3D" backward-word
 
 # Aliases
 alias findpls="fzf --preview 'bat --style=numbers --color=always --line-range :500 {}'"
@@ -46,6 +51,7 @@ alias lzd="lazydocker"
 alias dce="docker compose exec"
 alias dcu="docker compose up"
 alias dcub="docker compose up --build"
+alias dps="docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}'"
 alias vim="nvim"
 alias logbat="bat -l syslog --paging=never"
 alias rlyclear='printf "\ec\e[3J"'
@@ -62,6 +68,8 @@ alias n="nvim ."
 alias dunno="echo '¯\\_(ツ)_/¯' | pbcopy'"
 alias tw='tmux rename-window "$(basename "$PWD")"'
 alias flame="pkill flameshot && open /Applications/flameshot.app"
+alias pve="pbpaste | nvim -"
+alias la="lsd -haltr"
 # Copy zsh prompt setup to clipboard
 alias setupasta="echo 'apt update && apt install zsh && curl -sSL https://github.com/knowald/jovial/raw/master/installer.sh | sudo -E bash -s \${USER:=\`whoami\`}' | pbcopy"
 
@@ -100,15 +108,23 @@ export PATH="/usr/local/opt/mysql-client/bin:$PATH"
 export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="/opt/homebrew/opt/gnu-getopt/bin:$PATH"
+export PATH="$HOME/bin:$PATH"
 
 # FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git'
 
-# NVM
+# NVM - lazy-loaded on first use; eager sourcing costs ~95ms at startup
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+_load_nvm() {
+  unset -f nvm node npm npx
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+}
+nvm() { _load_nvm; nvm "$@" }
+node() { _load_nvm; node "$@" }
+npm() { _load_nvm; npm "$@" }
+npx() { _load_nvm; npx "$@" }
 
 # Android SDK
 export ANDROID_HOME="$HOME/Library/Android/sdk"
@@ -125,8 +141,10 @@ export _ZO_ECHO=1
 
 # Shell integrations
 eval "$(zoxide init zsh)"
-eval "$(rbenv init -)"
-eval "$(thefuck --alias)"
+# --no-rehash skips shim rebuild (~90ms); run `rbenv rehash` after gem installs
+eval "$(rbenv init - --no-rehash zsh)"
+# Lazy-load thefuck - Python startup costs ~300ms
+fuck() { eval "$(thefuck --alias)" && fuck "$@"; }
 
 # FZF-tab in tmux popup
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
