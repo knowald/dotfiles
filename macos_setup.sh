@@ -34,13 +34,9 @@ fi
 # Brew Packages
 # ===================
 echo ""
-echo "[2/6] Installing Homebrew packages..."
-if [ -f "$DOTFILES_DIR/brew_leaves.txt" ]; then
-    xargs brew install < "$DOTFILES_DIR/brew_leaves.txt" || true
-fi
-
-if [ -f "$DOTFILES_DIR/brew_casks.txt" ]; then
-    xargs brew install --cask < "$DOTFILES_DIR/brew_casks.txt" || true
+echo "[2/6] Installing Homebrew packages from Brewfile..."
+if [ -f "$DOTFILES_DIR/Brewfile" ]; then
+    brew bundle install --file="$DOTFILES_DIR/Brewfile" || true
 fi
 
 # ===================
@@ -108,6 +104,7 @@ symlink() {
 symlink "$DOTFILES_DIR/.zshrc" "$HOME/.zshrc"
 symlink "$DOTFILES_DIR/.tmux.conf" "$HOME/.tmux.conf"
 symlink "$DOTFILES_DIR/.gitconfig" "$HOME/.gitconfig"
+symlink "$DOTFILES_DIR/.gitignore_global" "$HOME/.gitignore_global"
 symlink "$DOTFILES_DIR/.ssh/config" "$HOME/.ssh/config"
 symlink "$DOTFILES_DIR/.config/nvim" "$HOME/.config/nvim"
 symlink "$DOTFILES_DIR/.config/ghostty" "$HOME/.config/ghostty"
@@ -176,5 +173,7 @@ echo "Next steps:"
 echo "  1. Edit ~/.secrets with your API keys and passwords"
 echo "  2. Restart your terminal or run: source ~/.zshrc"
 echo "  3. Open nvim and run :Lazy to install plugins"
+echo "  4. (optional) Apply macOS system defaults: ./macos_defaults.sh"
+echo "  5. (optional) Enable git hooks: pre-commit install"
 echo ""
 echo "Backups stored in: $BACKUP_DIR"

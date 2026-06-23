@@ -1,0 +1,2 @@
+# Quiet style/info nits in these personal scripts; CI also runs at error severity.
+disable=SC2155,SC2086,SC1091

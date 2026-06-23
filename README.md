@@ -8,14 +8,14 @@ Personal development environment configuration for macOS. Built for a zsh + tmux
 # Clone the repo
 git clone git@github.com:yourusername/dotfiles.git ~/dotfiles
 
-# Install Homebrew packages
-xargs brew install < ~/dotfiles/brew_leaves.txt
-xargs brew install --cask < ~/dotfiles/brew_casks.txt
+# Install Homebrew packages (formulae + casks via Brewfile)
+brew bundle install --file=~/dotfiles/Brewfile
 
 # Symlink configs
 ln -sf ~/dotfiles/.zshrc ~/.zshrc
 ln -sf ~/dotfiles/.tmux.conf ~/.tmux.conf
 ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
+ln -sf ~/dotfiles/.gitignore_global ~/.gitignore_global
 ln -sf ~/dotfiles/.config/nvim ~/.config/nvim
 ln -sf ~/dotfiles/.config/ghostty ~/.config/ghostty
 ln -sf ~/dotfiles/.config/pgcli ~/.config/pgcli
@@ -171,6 +171,7 @@ Built on [LazyVim](https://www.lazyvim.org/) distribution.
 - **Pager:** [delta](https://github.com/dandavison/delta) - Syntax-highlighted diffs
 - **Merge style:** diff3 (shows base)
 - **Color moved:** enabled
+- **Global ignore:** `.gitignore_global` via `core.excludesFile` - macOS, editor, and Claude artifacts ignored in every repo
 
 ---
 
@@ -201,7 +202,33 @@ ssh staging       # project shortcuts
 
 ---
 
+## Tasks (just)
+
+Common operations are wrapped in a `justfile`. Run `just` to list them.
+
+| Recipe          | Action                                              |
+| --------------- | --------------------------------------------------- |
+| `just setup`    | Full machine setup (runs `macos_setup.sh`)          |
+| `just brew-install` | Install everything in the `Brewfile`            |
+| `just brew-diff`    | Show drift between installed packages and `Brewfile` |
+| `just update`   | Update and upgrade brew packages                    |
+| `just defaults` | Apply macOS system defaults (`macos_defaults.sh`)   |
+| `just lint`     | Run pre-commit hooks (shellcheck + secret scan)     |
+
+### Pre-commit
+
+`pre-commit install` enables hooks that run on every commit: shellcheck on the
+shell scripts, [gitleaks](https://github.com/gitleaks/gitleaks) to block
+accidental secret commits, and basic file hygiene. Config in
+`.pre-commit-config.yaml`.
+
+---
+
 ## Homebrew Packages
+
+Packages are managed with a curated [`Brewfile`](Brewfile) (`brew bundle`).
+The list is intentional, not a full machine dump - use `just brew-diff` to see
+what is installed but untracked before adding it.
 
 ### CLI Essentials
 
@@ -246,8 +273,8 @@ ssh staging       # project shortcuts
 
 | Tool        | Description                |
 | ----------- | -------------------------- |
-| `terraform` | Infrastructure as code     |
-| `opentofu`  | Terraform fork             |
+| `opentofu`  | Infrastructure as code     |
+| `tfenv`     | Terraform/tofu version mgr |
 | `ansible`   | Configuration management   |
 | `kubectl`   | Kubernetes CLI             |
 | `k9s`       | Kubernetes TUI             |
@@ -327,7 +354,6 @@ ssh staging       # project shortcuts
 | `hammerspoon` | [Hammerspoon](https://www.hammerspoon.org/) | macOS automation |
 | `the-unarchiver` | [The Unarchiver](https://theunarchiver.com/) | Archive extraction |
 | `keka` | [Keka](https://www.keka.io/) | File archiver |
-| `balenaetcher` | [balenaEtcher](https://etcher.balena.io/) | USB flasher |
 | `flameshot` | [Flameshot](https://flameshot.org/) | Screenshots |
 
 ### Media
@@ -455,19 +481,24 @@ dotfiles/
 │   ├── ghostty/             # Terminal config
 │   ├── nvim/                # Neovim (LazyVim)
 │   └── pgcli/               # PostgreSQL CLI
+├── .github/workflows/       # CI (shellcheck + Brewfile check)
 ├── .hammerspoon/            # macOS automation
 ├── .ssh/
 │   ├── config               # Generic SSH settings (tracked)
 │   └── config.local.example # Template for hosts (tracked)
+├── .editorconfig            # Editor formatting rules
 ├── .gitconfig               # Git config
 ├── .gitignore               # Repo ignores
+├── .gitignore_global        # Global ignore (core.excludesFile)
+├── .pre-commit-config.yaml  # Lint + secret-scan hooks
 ├── .secrets.example         # Secrets template
 ├── .tmux.conf               # Tmux config
 ├── .zshrc                   # Shell config (tracked)
 ├── .zshrc.local.example     # Template for local settings (tracked)
-├── brew_casks.txt           # GUI apps
-├── brew_leaves.txt          # CLI tools
+├── Brewfile                 # Curated brew formulae + casks (brew bundle)
+├── justfile                 # Task runner recipes
 ├── macos_setup.sh           # Full setup script
+├── macos_defaults.sh        # macOS system defaults (opt-in)
 ├── export_local.sh          # Export local configs for migration
 ├── import_local.sh          # Import local configs on new machine
 └── README.md                # This file
