@@ -20,7 +20,9 @@ ln -sf ~/dotfiles/.config/nvim ~/.config/nvim
 ln -sf ~/dotfiles/.config/ghostty ~/.config/ghostty
 ln -sf ~/dotfiles/.config/pgcli ~/.config/pgcli
 ln -sf ~/dotfiles/.ssh/config ~/.ssh/config
-ln -sf ~/dotfiles/.claude ~/.claude
+mkdir -p ~/.claude
+ln -sf ~/dotfiles/.claude/notify.sh ~/.claude/notify.sh
+ln -sf ~/dotfiles/.claude/settings.json ~/.claude/settings.json
 
 # Set up local configs (machine-specific, not tracked)
 cp ~/dotfiles/.zshrc.local.example ~/.zshrc.local
@@ -171,7 +173,7 @@ Built on [LazyVim](https://www.lazyvim.org/) distribution.
 - **Pager:** [delta](https://github.com/dandavison/delta) - Syntax-highlighted diffs
 - **Merge style:** diff3 (shows base)
 - **Color moved:** enabled
-- **Global ignore:** `.gitignore_global` via `core.excludesFile` - macOS, editor, and Claude artifacts ignored in every repo
+- **Global ignore:** `.gitignore_global` via `core.excludesFile` - macOS, editor, and Claude artifacts ignored in every repo. This repo intentionally tracks `.claude/notify.sh` and `.claude/settings.json` (already committed); any new `.claude/` file needs `git add -f`.
 
 ---
 
