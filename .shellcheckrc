@@ -1,2 +1,3 @@
-# Quiet style/info nits in these personal scripts; CI also runs at error severity.
+# Quiet style/info nits in these personal scripts. CI and pre-commit read this
+# same file, so these disables apply there too.
 disable=SC2155,SC2086,SC1091

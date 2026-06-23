@@ -9,11 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install shellcheck
-        run: sudo apt-get update && sudo apt-get install -y shellcheck
-      - name: Lint shell scripts
-        run: |
-          shellcheck macos_setup.sh macos_defaults.sh export_local.sh import_local.sh .claude/notify.sh
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - uses: pre-commit/action@v3.0.1
 
   brewfile:
     runs-on: macos-latest
