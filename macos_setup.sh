@@ -90,14 +90,19 @@ symlink() {
     local name="$(basename $dest)"
 
     if [ -L "$dest" ]; then
-        echo "  $name: already linked"
+        if [ "$(readlink "$dest")" = "$src" ]; then
+            echo "  $name: already linked"
+        else
+            echo "  $name: repointing link"
+            ln -sfn "$src" "$dest"
+        fi
     elif [ -e "$dest" ]; then
         echo "  $name: backing up and linking"
         mv "$dest" "$BACKUP_DIR/${name}.bak.$(date +%s)"
-        ln -sf "$src" "$dest"
+        ln -sfn "$src" "$dest"
     else
         echo "  $name: linking"
-        ln -sf "$src" "$dest"
+        ln -sfn "$src" "$dest"
     fi
 }
 
@@ -157,10 +162,12 @@ if [ -f "$(brew --prefix)/opt/fzf/install" ]; then
     "$(brew --prefix)/opt/fzf/install" --key-bindings --completion --no-update-rc --no-bash --no-fish
 fi
 
-# Set default shell to zsh
-if [ "$SHELL" != "$(which zsh)" ]; then
+# Set default shell to zsh (optional; never abort setup)
+zsh_path="$(command -v zsh)"
+if [ -n "$zsh_path" ] && [ "$SHELL" != "$zsh_path" ]; then
     echo "  Setting zsh as default shell..."
-    chsh -s "$(which zsh)"
+    grep -qxF "$zsh_path" /etc/shells || echo "$zsh_path" | sudo tee -a /etc/shells >/dev/null
+    chsh -s "$zsh_path" || echo "  Could not change shell; run 'chsh -s $zsh_path' manually."
 fi
 
 # ===================
