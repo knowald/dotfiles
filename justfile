@@ -26,7 +26,7 @@ brew-diff:
     comm -23 <(brew leaves | awk -F/ '{print $NF}' | sort -u) <(echo "$brews") || true
     echo
     echo "## Brewfile formulae NOT installed:"
-    comm -13 <(brew leaves | awk -F/ '{print $NF}' | sort -u) <(echo "$brews") || true
+    comm -13 <(brew list --formula | awk -F/ '{print $NF}' | sort -u) <(echo "$brews") || true
     echo
     echo "## Installed casks NOT in Brewfile (consider adding):"
     comm -23 <(brew list --cask | sort -u) <(echo "$casks") || true
