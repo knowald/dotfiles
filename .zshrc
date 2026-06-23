@@ -19,16 +19,14 @@ source $ZSH/oh-my-zsh.sh
 # Language
 export LANG=en_US.UTF-8
 
-# Ruby
-# Hardcoded brew prefix - `brew --prefix` adds ~1.5s to shell startup
-export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/opt/homebrew/opt/openssl@1.1"
-
 # Python
 export PATH="$PATH:/opt/homebrew/opt/python@3.13/libexec/bin"
 
 # Terraform completion
 autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /usr/local/bin/terraform terraform
+if command -v terraform >/dev/null; then
+  complete -o nospace -C "$(command -v terraform)" terraform
+fi
 
 # History
 HISTSIZE=1000000
@@ -55,7 +53,7 @@ alias dps="docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}'"
 alias vim="nvim"
 alias logbat="bat -l syslog --paging=never"
 alias rlyclear='printf "\ec\e[3J"'
-alias dockhere="docker run --rm -it -v \"\$pwd\":/mnt"
+alias dockhere='docker run --rm -it -v "$PWD":/mnt'
 alias gpoh="git push origin HEAD"
 alias j="z"
 alias b64pbcopy=base64pbcopy
@@ -65,7 +63,7 @@ alias okciao="tmux kill-server"
 alias tks="tmux kill-server"
 alias tn="tmux new"
 alias n="nvim ."
-alias dunno="echo '¯\\_(ツ)_/¯' | pbcopy'"
+alias dunno="echo '¯\\_(ツ)_/¯' | pbcopy"
 alias tw='tmux rename-window "$(basename "$PWD")"'
 alias flame="pkill flameshot && open /Applications/flameshot.app"
 alias pve="pbpaste | nvim -"
@@ -84,10 +82,14 @@ function base64pbcopy() {
 }
 
 function gitstrip() {
-    local result="${1#*@}"
-    result="${result%.git}"
-    result="https://${result//://}"
-    echo "$result"
+    case "$1" in
+        http*) echo "${1%.git}" ;;
+        *)
+            local result="${1#*@}"
+            result="${result%.git}"
+            echo "https://${result/:/\/}"
+            ;;
+    esac
 }
 
 function gitstripstdin() {
@@ -131,7 +133,7 @@ export ANDROID_HOME="$HOME/Library/Android/sdk"
 export PATH="$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$PATH"
 
 # Go
-export PATH=$PATH:$(go env GOPATH)/bin
+export PATH="$PATH:${GOPATH:-$HOME/go}/bin"
 
 # Environment
 export TERM=xterm-256color
@@ -189,7 +191,7 @@ generate-password() {
 generate-deploy-keys() {
   if [[ $# -lt 2 ]]; then
     echo "Usage: generate-deploy-keys <project> <env> [env...]"
-    echo "Example: generate-deploy-keys sparrowro staging preprod production"
+    echo "Example: generate-deploy-keys myproject staging preprod production"
     return 1
   fi
 
