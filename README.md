@@ -16,6 +16,7 @@ ln -sf ~/dotfiles/.zshrc ~/.zshrc
 ln -sf ~/dotfiles/.tmux.conf ~/.tmux.conf
 ln -sf ~/dotfiles/.gitconfig ~/.gitconfig
 ln -sf ~/dotfiles/.gitignore_global ~/.gitignore_global
+ln -sf ~/dotfiles/.markdownlint.jsonc ~/.markdownlint.jsonc
 ln -sf ~/dotfiles/.config/nvim ~/.config/nvim
 ln -sf ~/dotfiles/.config/ghostty ~/.config/ghostty
 ln -sf ~/dotfiles/.config/pgcli ~/.config/pgcli

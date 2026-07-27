@@ -43,33 +43,34 @@ bindkey "^[[1;3C" forward-word
 bindkey "^[[1;3D" backward-word
 
 # Aliases
-alias findpls="fzf --preview 'bat --style=numbers --color=always --line-range :500 {}'"
-alias lzg="lazygit"
-alias lzd="lazydocker"
+alias bufvim='tmux capture-pane -pS -32768 | vim -'
+alias b64pbcopy=base64pbcopy
+alias cpcmd='fc -ln -1 | sed "s/^[[:space:]]*//" | tr -d "\n" | pbcopy'
 alias dce="docker compose exec"
 alias dcu="docker compose up"
 alias dcub="docker compose up --build"
-alias dps="docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}'"
-alias vim="nvim"
-alias logbat="bat -l syslog --paging=never"
-alias rlyclear='printf "\ec\e[3J"'
+alias dex='docker compose exec app bundle exec'
 alias dockhere='docker run --rm -it -v "$PWD":/mnt'
+alias dps="docker ps --format 'table {{.Names}}\t{{.Image}}\t{{.Status}}'"
+alias dunno="echo '¯\\_(ツ)_/¯' | pbcopy"
+alias findpls="fzf --preview 'bat --style=numbers --color=always --line-range :500 {}'"
+alias flame="pkill flameshot && open /Applications/flameshot.app"
 alias gpoh="git push origin HEAD"
 alias j="z"
-alias b64pbcopy=base64pbcopy
 alias killaudio="sudo pkill coreaudiod"
-alias dex='docker compose exec app bundle exec'
+alias la="lsd -haltr"
+alias logbat="bat -l syslog --paging=never"
+alias lzd="lazydocker"
+alias lzg="lazygit"
+alias n="nvim ."
 alias okciao="tmux kill-server"
+alias pve="pbpaste | nvim -"
+alias rlyclear='printf "\ec\e[3J"'
+alias setupasta="echo 'apt update && apt install zsh && curl -sSL https://github.com/knowald/jovial/raw/master/installer.sh | sudo -E bash -s \${USER:=\`whoami\`}' | pbcopy"
 alias tks="tmux kill-server"
 alias tn="tmux new"
-alias n="nvim ."
-alias dunno="echo '¯\\_(ツ)_/¯' | pbcopy"
 alias tw='tmux rename-window "$(basename "$PWD")"'
-alias flame="pkill flameshot && open /Applications/flameshot.app"
-alias pve="pbpaste | nvim -"
-alias la="lsd -haltr"
-# Copy zsh prompt setup to clipboard
-alias setupasta="echo 'apt update && apt install zsh && curl -sSL https://github.com/knowald/jovial/raw/master/installer.sh | sudo -E bash -s \${USER:=\`whoami\`}' | pbcopy"
+alias vim="nvim"
 
 # Functions
 function base64pbcopy() {
@@ -140,6 +141,9 @@ export TERM=xterm-256color
 export EDITOR=nvim
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 export _ZO_ECHO=1
+
+# Claude Code
+export CLAUDE_CODE_DISABLE_MOUSE_CLICKS=1
 
 # Shell integrations
 eval "$(zoxide init zsh)"
@@ -228,4 +232,15 @@ generate-deploy-keys() {
   for priv in "${private_keys[@]}"; do
     echo "  ${priv}"
   done
+}
+
+# Open most recent glab pipeline of current repo in browser
+glpipe() {
+  local url
+  url=$(glab ci list -F json -P 1 | jq -r '.[0].web_url')
+  if [ -z "$url" ] || [ "$url" = "null" ]; then
+    echo "No pipeline found (are you in a GitLab repo?)" >&2
+    return 1
+  fi
+  open "$url"
 }
