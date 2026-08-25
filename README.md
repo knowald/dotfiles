@@ -85,6 +85,11 @@ The repo uses a `.local` pattern to separate shareable configs from machine-spec
 - `ask` - Quick Claude prompt: `ask how to say hello in polish`
 - `base64pbcopy` - Base64 encode file to clipboard
 - `gitstrip` / `gitstripstdin` - Convert git SSH URLs to HTTPS
+- `generate-password` - 32-char alphanumeric password
+- `generate-deploy-keys` - ed25519 deploy keys per project/environment
+- `glpipe` - Open the most recent GitLab pipeline in the browser
+- `gtoi` - `glab opentofu init` for the current repo and given environment
+- `nvm` / `node` / `npm` / `npx` - Shims that lazy-load nvm on first use
 
 ---
 
@@ -229,185 +234,10 @@ accidental secret commits, and basic file hygiene. Config in
 
 ## Homebrew Packages
 
-Packages are managed with a curated [`Brewfile`](Brewfile) (`brew bundle`).
-The list is intentional, not a full machine dump - use `just brew-diff` to see
-what is installed but untracked before adding it.
-
-### CLI Essentials
-
-| Tool      | Description                       |
-| --------- | --------------------------------- |
-| `bat`     | Cat with syntax highlighting      |
-| `eza`     | Modern ls replacement             |
-| `lsd`     | LSDeluxe - another ls replacement |
-| `fd`      | Fast find alternative             |
-| `ripgrep` | Fast grep alternative             |
-| `fzf`     | Fuzzy finder                      |
-| `zoxide`  | Smart cd                          |
-| `tldr`    | Simplified man pages              |
-| `jq`      | JSON processor                    |
-| `yq`      | YAML processor                    |
-
-### Development
-
-| Tool         | Description          |
-| ------------ | -------------------- |
-| `neovim`     | Editor               |
-| `tmux`       | Terminal multiplexer |
-| `lazygit`    | Git TUI              |
-| `lazydocker` | Docker TUI           |
-| `git-delta`  | Better git diffs     |
-| `gh`         | GitHub CLI           |
-| `just`       | Command runner       |
-| `pre-commit` | Git hooks framework  |
-
-### Languages & Runtimes
-
-| Tool     | Description                  |
-| -------- | ---------------------------- |
-| `rbenv`  | Ruby version manager         |
-| `node`   | Node.js                      |
-| `pnpm`   | Fast npm alternative         |
-| `go`     | Golang                       |
-| `poetry` | Python dependency management |
-| `pipx`   | Python CLI tools             |
-
-### Infrastructure & DevOps
-
-| Tool        | Description                |
-| ----------- | -------------------------- |
-| `opentofu`  | Infrastructure as code     |
-| `tfenv`     | Terraform/tofu version mgr |
-| `ansible`   | Configuration management   |
-| `kubectl`   | Kubernetes CLI             |
-| `k9s`       | Kubernetes TUI             |
-| `helm`      | Kubernetes package manager |
-| `kamal`     | Rails deployment           |
-| `docker`    | Containers                 |
-| `dive`      | Docker image explorer      |
-
-### Cloud CLIs
-
-| Tool     | Description                      |
-| -------- | -------------------------------- |
-| `hcloud` | Hetzner Cloud (in history)       |
-| `aws`    | Amazon Web Services (in history) |
-| `gcloud` | Google Cloud (in history)        |
-| `heroku` | Heroku CLI                       |
-
-### Security & Networking
-
-| Tool         | Description                  |
-| ------------ | ---------------------------- |
-| `sops`       | Encrypted secrets            |
-| `age`        | Encryption tool              |
-| `trufflehog` | Secrets scanner              |
-| `wpscan`     | WordPress scanner            |
-| `mitmproxy`  | HTTP proxy                   |
-| `dog`        | DNS lookup                   |
-| `httpstat`   | HTTP timing                  |
-| `nmap`       | Network scanner (in history) |
-
-### Media & Misc
-
-| Tool        | Description         |
-| ----------- | ------------------- |
-| `ffmpeg`    | Video processing    |
-| `yt-dlp`    | Video downloader    |
-| `silicon`   | Code screenshots    |
-| `asciinema` | Terminal recording  |
-| `tokei`     | Code statistics     |
-| `ncdu`      | Disk usage analyzer |
-
----
-
-## macOS Apps (Casks)
-
-### Productivity
-
-| Cask | App | Description |
-|------|-----|-------------|
-| `raycast` | [Raycast](https://raycast.com/) | Spotlight replacement |
-| `rectangle` | [Rectangle](https://rectangleapp.com/) | Window management |
-| `alt-tab` | [AltTab](https://alt-tab-macos.netlify.app/) | Windows-style alt-tab |
-| `maccy` | [Maccy](https://maccy.app/) | Clipboard manager |
-| `hazeover` | [HazeOver](https://hazeover.com/) | Distraction dimmer |
-| `obsidian` | [Obsidian](https://obsidian.md/) | Note-taking |
-
-### Development
-
-| Cask | App | Description |
-|------|-----|-------------|
-| `ghostty` | [Ghostty](https://ghostty.org/) | Terminal emulator |
-| `cursor` | [Cursor](https://cursor.sh/) | AI code editor |
-| `zed` | [Zed](https://zed.dev/) | Fast code editor |
-| `docker` | [Docker](https://www.docker.com/) | Containers |
-| `beekeeper-studio` | [Beekeeper Studio](https://www.beekeeperstudio.io/) | Database GUI |
-| `bruno` | [Bruno](https://www.usebruno.com/) | API client |
-| `charles` | [Charles](https://www.charlesproxy.com/) | HTTP proxy/debugger |
-
-### System & Utilities
-
-| Cask | App | Description |
-|------|-----|-------------|
-| `stats` | [Stats](https://github.com/exelban/stats) | Menu bar system monitor |
-| `monitorcontrol` | [MonitorControl](https://github.com/MonitorControl/MonitorControl) | External display brightness |
-| `betterdisplay` | [BetterDisplay](https://github.com/waydabber/BetterDisplay) | Display management |
-| `linearmouse` | [LinearMouse](https://linearmouse.app/) | Mouse customization |
-| `hammerspoon` | [Hammerspoon](https://www.hammerspoon.org/) | macOS automation |
-| `the-unarchiver` | [The Unarchiver](https://theunarchiver.com/) | Archive extraction |
-| `keka` | [Keka](https://www.keka.io/) | File archiver |
-| `flameshot` | [Flameshot](https://flameshot.org/) | Screenshots |
-
-### Media
-
-| Cask | App | Description |
-|------|-----|-------------|
-| `iina` | [IINA](https://iina.io/) | Video player |
-| `vlc` | [VLC](https://www.videolan.org/) | Media player |
-| `spotify` | [Spotify](https://www.spotify.com/) | Music |
-| `obs` | [OBS](https://obsproject.com/) | Streaming/recording |
-| `cog` | [Cog](https://cog.losno.co/) | Audio player |
-| `eqmac` | [eqMac](https://eqmac.app/) | System equalizer |
-| `audacity` | [Audacity](https://www.audacityteam.org/) | Audio editor |
-| `calibre` | [Calibre](https://calibre-ebook.com/) | E-book manager |
-
-### Communication
-
-| Cask | App | Description |
-|------|-----|-------------|
-| `telegram` | [Telegram](https://telegram.org/) | Messaging |
-| `signal` | [Signal](https://signal.org/) | Secure messaging |
-
-### Browsers
-
-| Cask | App | Description |
-|------|-----|-------------|
-| `google-chrome` | [Google Chrome](https://www.google.com/chrome/) | Chrome browser |
-| `firefox` | [Firefox](https://www.mozilla.org/firefox/) | Firefox browser |
-
-### Security & Network
-
-| Cask | App | Description |
-|------|-----|-------------|
-| `bitwarden` | [Bitwarden](https://bitwarden.com/) | Password manager |
-| `nordvpn` | [NordVPN](https://nordvpn.com/) | VPN |
-| `wireshark` | [Wireshark](https://www.wireshark.org/) | Network analyzer |
-| `cyberduck` | [Cyberduck](https://cyberduck.io/) | FTP/cloud client |
-| `ngrok` | [ngrok](https://ngrok.com/) | Localhost tunneling |
-
-### Other
-
-| Cask | App | Description |
-|------|-----|-------------|
-| `anki` | [Anki](https://apps.ankiweb.net/) | Flashcards |
-| `flux` | [f.lux](https://justgetflux.com/) | Blue light filter |
-| `stretchly` | [Stretchly](https://hovancik.net/stretchly/) | Break reminder |
-| `qbittorrent` | [qBittorrent](https://www.qbittorrent.org/) | Torrent client |
-| `bambu-studio` | [Bambu Studio](https://bambulab.com/en/download/studio) | 3D printing slicer |
-| `coolterm` | [CoolTerm](https://freeware.the-meiers.org/) | Serial terminal |
-| `flowvision` | [FlowVision](https://github.com/netdcy/FlowVision) | Image browser |
-| `claude` | [Claude](https://claude.ai/) | AI assistant |
+All formulae and casks live in the [`Brewfile`](Brewfile) (`brew bundle`).
+The file is a snapshot of what is installed on the machine: regenerate it
+with `brew bundle dump --no-vscode`, prune anything unwanted, and commit.
+Use `just brew-diff` to see what is installed but untracked.
 
 ### Manual Install
 
@@ -484,21 +314,24 @@ dotfiles/
 │   ├── ghostty/             # Terminal config
 │   ├── nvim/                # Neovim (LazyVim)
 │   └── pgcli/               # PostgreSQL CLI
-├── .github/workflows/       # CI (shellcheck + Brewfile check)
+├── .github/workflows/       # CI (pre-commit + Brewfile parse check)
 ├── .hammerspoon/            # macOS automation
 ├── .ssh/
 │   ├── config               # Generic SSH settings (tracked)
 │   └── config.local.example # Template for hosts (tracked)
 ├── .editorconfig            # Editor formatting rules
 ├── .gitconfig               # Git config
+├── .gitconfig.local.example # Template for git identity (tracked)
 ├── .gitignore               # Repo ignores
 ├── .gitignore_global        # Global ignore (core.excludesFile)
+├── .markdownlint.jsonc      # Markdown lint rules
 ├── .pre-commit-config.yaml  # Lint + secret-scan hooks
 ├── .secrets.example         # Secrets template
+├── .shellcheckrc            # ShellCheck config
 ├── .tmux.conf               # Tmux config
 ├── .zshrc                   # Shell config (tracked)
 ├── .zshrc.local.example     # Template for local settings (tracked)
-├── Brewfile                 # Curated brew formulae + casks (brew bundle)
+├── Brewfile                 # Brew formulae + casks snapshot (brew bundle)
 ├── justfile                 # Task runner recipes
 ├── macos_setup.sh           # Full setup script
 ├── macos_defaults.sh        # macOS system defaults (opt-in)
