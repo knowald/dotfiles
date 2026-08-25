@@ -5,7 +5,7 @@
 exclude: ^\.config/nvim/lazyvim\.json$
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -17,13 +17,13 @@ repos:
         args: [--fix=lf]
 
   - repo: https://github.com/koalaman/shellcheck-precommit
-    rev: v0.10.0
+    rev: v0.11.0
     hooks:
       - id: shellcheck
         # Only lint bash .sh scripts; shellcheck cannot parse zsh (.zshrc et al)
         files: \.sh$
 
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.21.2
+    rev: v8.30.0
     hooks:
       - id: gitleaks
