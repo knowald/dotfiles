@@ -14,6 +14,12 @@ ZSH_DISABLE_COMPFIX="true"
 # Update manually with `omz update` - the auto-check costs ~80ms when due
 zstyle ':omz:update' mode disabled
 
+# Grok CLI (if installed) - fpath must be set before oh-my-zsh runs compinit
+if [ -d "$HOME/.grok" ]; then
+  export PATH="$HOME/.grok/bin:$PATH"
+  fpath=(~/.grok/completions/zsh $fpath)
+fi
+
 source $ZSH/oh-my-zsh.sh
 
 # Language
