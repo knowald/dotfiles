@@ -244,3 +244,15 @@ glpipe() {
   fi
   open "$url"
 }
+gtoi() {
+  local env="${1:?Usage: gtoi <environment>}"
+  local url repo
+
+  url="$(git remote get-url origin)" || return
+  # Strip ssh (git@host:) or https (https://host/) prefix, keep group/repo
+  repo="${url#*:}"
+  repo="${repo#//*/}"
+  repo="${repo%.git}"
+
+  glab opentofu init -R "$repo" "$env"
+}
