@@ -48,6 +48,13 @@ Sessionx.vim
 # Cursor
 .cursor/
 
+# Installer backups (e.g. .zshrc.bak.<epoch>)
+*.bak
+*.bak.*
+
+# Ruby LSP scratch state
+.ruby-lsp/
+
 # Claude Code
 CLAUDE.md
 .claude/
