@@ -262,3 +262,11 @@ gtoi() {
 
   glab opentofu init -R "$repo" "$env"
 }
+
+function unquote() {
+  sed -E -e 's/\t//g' -e 's/^[[:space:]]*>[[:space:]]?//' "$@" | awk '
+  /^[[:space:]]*$/ { if (buf != "") { print buf; buf = "" }; print ""; next }
+  { buf = (buf == "") ? $0 : buf " " $0 }
+  END { if (buf != "") print buf }
+  '
+}
