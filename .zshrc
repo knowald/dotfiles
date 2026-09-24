@@ -20,6 +20,9 @@ if [ -d "$HOME/.grok" ]; then
   fpath=(~/.grok/completions/zsh $fpath)
 fi
 
+# Generated completions (uv, rustup, k9s, native _git) - regenerate with `just completions`
+[ -d "$HOME/.zfunc" ] && fpath=(~/.zfunc $fpath)
+
 source $ZSH/oh-my-zsh.sh
 
 # Language
@@ -32,6 +35,9 @@ export PATH="$PATH:/opt/homebrew/opt/python@3.13/libexec/bin"
 autoload -U +X bashcompinit && bashcompinit
 if command -v terraform >/dev/null; then
   complete -o nospace -C "$(command -v terraform)" terraform
+fi
+if command -v tofu >/dev/null; then
+  complete -o nospace -C "$(command -v tofu)" tofu
 fi
 
 # History
@@ -160,6 +166,20 @@ fuck() { eval "$(thefuck --alias)" && fuck "$@"; }
 
 # FZF-tab in tmux popup
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+# oh-my-zsh sets menu select, which fzf-tab needs off
+zstyle ':completion:*:*:*:*:*' menu no
+zstyle ':completion:*:descriptions' format '[%d]'
+zstyle ':fzf-tab:*' switch-group '<' '>'
+# popup width follows the longest candidate, which leaves no room for previews
+zstyle ':fzf-tab:complete:(cd|z|nvim|bat|cat|less|kill|ps|git-*|-command-|-parameter-|-brace-parameter-|export|unset|expand):*' popup-min-size 140 25
+zstyle ':fzf-tab:complete:(cd|z):*' fzf-preview 'eza -1 --color=always --icons $realpath'
+zstyle ':fzf-tab:complete:(nvim|bat|cat|less):*' fzf-preview 'bat --color=always --style=numbers --line-range :200 $realpath 2>/dev/null || eza -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-preview '[[ $group == "[process ID]" ]] && ps -p $word -o command -w -w'
+zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-flags --preview-window=down:3:wrap
+zstyle ':fzf-tab:complete:git-(add|diff|restore):*' fzf-preview 'git diff $word | delta'
+zstyle ':fzf-tab:complete:git-(checkout|switch):*' fzf-preview 'git log --oneline --graph --color=always $word 2>/dev/null | head -50'
+zstyle ':fzf-tab:complete:git-log:*' fzf-preview 'git show --color=always $word | delta'
+zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-preview 'echo ${(P)word}'
 
 # Keybindings
 bindkey '^Q' push-line-or-edit

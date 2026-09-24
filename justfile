@@ -47,3 +47,13 @@ defaults:
 # Lint shell scripts and run all pre-commit hooks
 lint:
     pre-commit run --all-files
+
+# Generate zsh completions for tools that don't ship them via brew
+completions:
+    mkdir -p ~/.zfunc
+    uv generate-shell-completion zsh > ~/.zfunc/_uv
+    rustup completions zsh > ~/.zfunc/_rustup
+    k9s completion zsh > ~/.zfunc/_k9s
+    # brew's git ships a bash-wrapper _git without per-subcommand contexts, prefer zsh's native one
+    ln -sf "$(zsh -fc 'print /usr/share/zsh/$ZSH_VERSION/functions/_git')" ~/.zfunc/_git
+    rm -f ~/.zcompdump*
