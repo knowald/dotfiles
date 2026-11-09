@@ -1,0 +1,10 @@
+#!/bin/sh
+# Strip indentation shared by all non-blank lines and trailing spaces, then copy.
+awk '
+  { line[NR] = $0; sub(/[ \t]+$/, "", line[NR]) }
+  line[NR] != "" {
+    match(line[NR], /^ */)
+    if (min == "" || RLENGTH < min) min = RLENGTH
+  }
+  END { for (i = 1; i <= NR; i++) { printf "%s", substr(line[i], min + 1); if (i < NR) printf "\n" } }
+' | pbcopy

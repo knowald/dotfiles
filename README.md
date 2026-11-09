@@ -115,7 +115,12 @@ The repo uses a `.local` pattern to separate shareable configs from machine-spec
 
 ### Features
 
-- Mouse support enabled
+- Mouse support enabled. Drag selects inside one pane, even over apps that capture
+  the mouse; Shift-drag selects with the terminal
+- Copies strip indentation shared by all lines (`bin/dedent-copy`), so text copied
+  from Claude Code pastes without its leading spaces
+- OSC 8 hyperlinks pass through, so wrapped links stay clickable (Claude Code also
+  needs `FORCE_HYPERLINK=1`, set in `.zshrc`)
 - Windows/panes start at index 1
 - 50,000 line history
 - GitHub-inspired color theme
@@ -331,6 +336,7 @@ dotfiles/
 ├── .tmux.conf               # Tmux config
 ├── .zshrc                   # Shell config (tracked)
 ├── .zshrc.local.example     # Template for local settings (tracked)
+├── bin/                     # Scripts linked into ~/.local/bin
 ├── Brewfile                 # Brew formulae + casks snapshot (brew bundle)
 ├── justfile                 # Task runner recipes
 ├── macos_setup.sh           # Full setup script

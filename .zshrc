@@ -290,3 +290,5 @@ function unquote() {
   END { if (buf != "") print buf }
   '
 }
+
+export FORCE_HYPERLINK=1
