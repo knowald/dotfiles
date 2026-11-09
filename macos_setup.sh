@@ -120,6 +120,7 @@ symlink "$DOTFILES_DIR/.hammerspoon" "$HOME/.hammerspoon"
 symlink "$DOTFILES_DIR/.claude/notify.sh" "$HOME/.claude/notify.sh"
 symlink "$DOTFILES_DIR/.claude/settings.json" "$HOME/.claude/settings.json"
 symlink "$DOTFILES_DIR/bin/dedent-copy" "$HOME/.local/bin/dedent-copy"
+symlink "$DOTFILES_DIR/bin/pbunwrap" "$HOME/.local/bin/pbunwrap"
 
 # ===================
 # Local configs (not tracked)

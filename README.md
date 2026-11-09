@@ -90,6 +90,8 @@ The repo uses a `.local` pattern to separate shareable configs from machine-spec
 - `glpipe` - Open the most recent GitLab pipeline in the browser
 - `gtoi` - `glab opentofu init` for the current repo and given environment
 - `nvm` / `node` / `npm` / `npx` - Shims that lazy-load nvm on first use
+- `pbunwrap` (`bin/`) - Rejoin hard-wrapped lines in the clipboard, keeping lists,
+  headings, tables and code blocks. `-n` prints without copying
 
 ---
 
