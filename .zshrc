@@ -8,7 +8,7 @@ ZSH_THEME="robbyrussell"
 DISABLE_AUTO_TITLE="true"
 
 # Plugins - add wisely, too many slow down shell startup
-plugins=(git zsh-autosuggestions zsh-history-substring-search docker docker-compose zsh-syntax-highlighting fzf-tab)
+plugins=(git fzf-tab zsh-autosuggestions zsh-history-substring-search docker docker-compose zsh-syntax-highlighting)
 
 ZSH_DISABLE_COMPFIX="true"
 # Update manually with `omz update` - the auto-check costs ~80ms when due
@@ -134,7 +134,8 @@ export NVM_DIR="$HOME/.nvm"
 _load_nvm() {
   unset -f nvm node npm npx
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+  # _comps only exists after compinit; non-interactive shells (agents, zsh -c) lack it
+  (( ${+_comps} )) && [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 }
 nvm() { _load_nvm; nvm "$@" }
 node() { _load_nvm; node "$@" }
@@ -176,10 +177,29 @@ zstyle ':fzf-tab:complete:(cd|z):*' fzf-preview 'eza -1 --color=always --icons $
 zstyle ':fzf-tab:complete:(nvim|bat|cat|less):*' fzf-preview 'bat --color=always --style=numbers --line-range :200 $realpath 2>/dev/null || eza -1 --color=always $realpath'
 zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-preview '[[ $group == "[process ID]" ]] && ps -p $word -o command -w -w'
 zstyle ':fzf-tab:complete:(kill|ps):argument-rest' fzf-flags --preview-window=down:3:wrap
-zstyle ':fzf-tab:complete:git-(add|diff|restore):*' fzf-preview 'git diff $word | delta'
+zstyle ':fzf-tab:complete:git-(add|diff|restore):*' fzf-preview 'git diff --quiet HEAD -- $word 2>/dev/null && bat --color=always --style=numbers --line-range :200 $word || git diff HEAD -- $word | delta'
 zstyle ':fzf-tab:complete:git-(checkout|switch):*' fzf-preview 'git log --oneline --graph --color=always $word 2>/dev/null | head -50'
 zstyle ':fzf-tab:complete:git-log:*' fzf-preview 'git show --color=always $word | delta'
-zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|expand):*' fzf-preview 'echo ${(P)word}'
+zstyle ':fzf-tab:complete:(-parameter-|-brace-parameter-|export|unset|expand):*' fzf-preview 'echo ${(P)word}'
+# Previews run in a fresh `zsh -c`, which has no aliases or functions, so they
+# are read from a dump written at the end of this file
+_ftb_definitions="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/fzf-tab-definitions.zsh"
+zstyle ':fzf-tab:complete:-command-:*' fzf-preview '
+case $group in
+  ("[alias]"|"[shell function]")
+    source ${XDG_CACHE_HOME:-$HOME/.cache}/zsh/fzf-tab-definitions.zsh 2>/dev/null
+    whence -f -- $word | bat --color=always --style=plain -l zsh ;;
+  ("[external command]"|"[builtin command]")
+    # tldr prints its "page not found" message to stdout, so only show output on success
+    if page=$(TLDR_AUTO_UPDATE_DISABLED=1 tldr --color $word 2>/dev/null); then
+      print -r -- $page
+    elif [[ $group == "[external command]" ]]; then
+      man $word 2>/dev/null | col -bx | head -80
+    else
+      whence -v -- $word
+    fi ;;
+  ("[parameter]") echo ${(P)word} ;;
+esac'
 
 # Keybindings
 bindkey '^Q' push-line-or-edit
@@ -290,5 +310,8 @@ function unquote() {
   END { if (buf != "") print buf }
   '
 }
+
+# Keep last so every alias and function above is captured; backgrounded to skip ~7ms
+{ mkdir -p "${_ftb_definitions:h}"; { alias -L; functions } >| "$_ftb_definitions" } &!
 
 export FORCE_HYPERLINK=1
