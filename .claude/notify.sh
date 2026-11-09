@@ -1,7 +1,7 @@
 #!/bin/bash
 # Claude Code notification script (Notification + Stop hooks)
 # Args: $1 = title, $2 = fallback message, $3 = sound (optional, default: Glass)
-# Hook JSON on stdin provides message, cwd, hook_event_name, transcript_path.
+# Hook JSON on stdin provides message, cwd, hook_event_name, last_assistant_message.
 
 SOUND="${3:-Glass}"
 SEND_NOTIFICATION=true
@@ -18,12 +18,7 @@ PROJECT=$(basename "${HOOK_CWD:-$PWD}")
 
 # On Stop there is no message, so show the start of Claude's last reply
 if [[ "$HOOK_EVENT" == "Stop" && -z "$HOOK_MESSAGE" ]]; then
-  TRANSCRIPT=$(hook_field '.transcript_path')
-  if [[ -f "$TRANSCRIPT" ]]; then
-    HOOK_MESSAGE=$(tail -200 "$TRANSCRIPT" | jq -rs \
-      '[.[] | select(.type == "assistant") | .message.content[]? | select(.type == "text") | .text] | last // empty' \
-      2>/dev/null | tr '\n' ' ' | cut -c1-160)
-  fi
+  HOOK_MESSAGE=$(hook_field '.last_assistant_message' | tr '\n' ' ' | cut -c1-160)
 fi
 
 SUBTITLE="$PROJECT"
