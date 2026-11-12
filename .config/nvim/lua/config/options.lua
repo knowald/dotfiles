@@ -7,3 +7,7 @@ local opt = vim.opt
 opt.clipboard = "unnamedplus"
 opt.scrolloff = 10
 opt.ignorecase = false
+
+vim.filetype.add({
+  extension = { j2 = "jinja", jinja2 = "jinja", tera = "jinja", tf = "terraform" },
+})
